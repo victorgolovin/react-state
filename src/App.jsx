@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Button from './Buttom';
 import Counter from './Counter';
+import Logs from './Logs';
+
 
 const INITIAL_COUNTER = 0;
 const COUNTER_STEP = 1;
@@ -9,15 +11,37 @@ const MIN_COUNTER_VALUE = -5;
 
 const App = () => {
 
+  const [counter, setCounter] = useState(INITIAL_COUNTER);
+  const [logs, setLogs] = useState([]);
 
-  const [counter, setCounter2] = useState(INITIAL_COUNTER);
+  let id = 0;
 
-  const handleMinusBtnClick12 = () => {
-    setCounter2(counter - COUNTER_STEP)
+  const handleMinusBtnClick = () => {
+    const newCounter = counter - COUNTER_STEP
+
+    const log = {
+      id: ++id,
+      action: 'minus',
+      prevValue: counter,
+      value: newCounter
+    }
+
+    setCounter(newCounter)
+    setLogs([...logs, log]) // Spread оператор для массивов - ... (позволяет предыдущее значение прибавить к новому (newCounter) в данном случае)
   }
 
-  const handlePlusBtnClick22 = () => {
-    setCounter2(counter + COUNTER_STEP)
+  const handlePlusBtnClick = () => {
+    const newCounter = counter + COUNTER_STEP
+
+    const log = {
+      id: ++id,
+      action: 'plus',
+      prevValue: counter,
+      value: newCounter
+    }
+    
+    setCounter(newCounter)
+    setLogs([...logs, log])
   }
 
   const isMinusBtmDisabled = () => {
@@ -34,18 +58,21 @@ const App = () => {
 
   return (
     <div>
-        <Button 
+        <Counter
+        value={counter}
+        isRed={isCounterRed()}/>
+        <Button
+
         text={'-'}
         isDisabled={isMinusBtmDisabled()}
-        onClick={handleMinusBtnClick12}/>
+        onClick={handleMinusBtnClick}/>
 
         <Button 
         text={'+'}
         isDisabled={isPlusBtmDisabled()}
-        onClick={handlePlusBtnClick22} />
-        <Counter
-        value={counter}
-        isRed={isCounterRed()}/>
+        onClick={handlePlusBtnClick} />
+        
+        <Logs logs={logs} />
       </div>
   )
 
