@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid';
 import Button from './Buttom';
 import Counter from './Counter';
 import Logs from './Logs';
@@ -8,20 +9,22 @@ const INITIAL_COUNTER = 0;
 const COUNTER_STEP = 1;
 const MAX_COUNTER_VALUE = 5;
 const MIN_COUNTER_VALUE = -5;
+const USER_ACTIONS = {
+  MINUS: 'minus',
+  PLUS: 'plus'
+}
 
 const App = () => {
 
   const [counter, setCounter] = useState(INITIAL_COUNTER);
   const [logs, setLogs] = useState([]);
 
-  let id = 0;
-
   const handleMinusBtnClick = () => {
     const newCounter = counter - COUNTER_STEP
 
     const log = {
-      id: ++id,
-      action: 'minus',
+      id: uuidv4(),
+      action: USER_ACTIONS.MINUS,
       prevValue: counter,
       value: newCounter
     }
@@ -34,8 +37,8 @@ const App = () => {
     const newCounter = counter + COUNTER_STEP
 
     const log = {
-      id: ++id,
-      action: 'plus',
+      id: uuidv4(),
+      action: USER_ACTIONS.PLUS,
       prevValue: counter,
       value: newCounter
     }
